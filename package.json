@@ -1,0 +1,32 @@
+{
+  "name": "study-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx src/app/index.ts",
+    "dev": "tsx watch src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonardofx1/study-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/leonardofx1/study-tracker/issues"
+  },
+  "homepage": "https://github.com/leonardofx1/study-tracker#readme",
+  "devDependencies": {
+    "@types/node": "^25.3.0",
+    "drizzle-kit": "^0.31.9",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.1",
+    "fastify": "^5.7.4"
+  }
+}
