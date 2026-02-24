@@ -18,8 +18,6 @@ export const subjectSchema= pgTable('subjectSchema',{
 export const studySession = pgTable('studySession', {
     id:uuid('id').primaryKey(),
     sessionDuration:doublePrecision('sessionDuration'),
-    data:date('date'),
-    startTime:doublePrecision('startTime').notNull(),
-    endTime:doublePrecision('endTime').notNull(),
+    date:date('date'),
     subjectId:uuid('subjectId').references(()=>subjectSchema.id)
 })
