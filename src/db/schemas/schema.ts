@@ -1,7 +1,5 @@
 import { date, doublePrecision, integer, pgTable, text, uuid } from "drizzle-orm/pg-core";
 
-
-
 export const userSchema = pgTable('userSchema', {
     id:uuid('id').primaryKey().notNull(),
     name:text('name').notNull(),
