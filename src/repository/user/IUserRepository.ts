@@ -5,5 +5,5 @@ export interface IUserRepository {
     create:(user:UserDto)=> Promise<UserDto>
     update:(user:UserDto)=>Promise<UserDto>
     delete:(id:UUID)=>Promise<UserDto>
-    find:(id:UUID)=> Promise<UserDto|null>
+    find:(id:string)=> Promise<UserDto|null>
 }

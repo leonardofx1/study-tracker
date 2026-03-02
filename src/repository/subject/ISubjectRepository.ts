@@ -1,4 +1,4 @@
-import type { UUID } from "node:crypto";
+
 import type { SubjectDto } from "../../dto/subject/subjectDto.js";
 
 
@@ -9,4 +9,5 @@ export interface ISubjectRepository {
     update:(subject:SubjectDto) => Promise<SubjectDto|null>
     find:(id:string)=>Promise<SubjectDto|null>
     findAll:(userId:string)=>Promise<SubjectDto[]|null>
+    existingSubject:(subject:string,idUser:string) => Promise<SubjectDto| null>
 }
