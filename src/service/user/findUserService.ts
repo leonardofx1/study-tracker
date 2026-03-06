@@ -1,6 +1,6 @@
-import type { UserDto } from "../dto/user/userDto.js";
-import type { IUserRepository } from "../repository/user/IUserRepository.js";
-import type { IFindUserService } from "./user/types/IFindUserService.js";
+import type { UserDto } from "../../dto/user/userDto.js";
+import type { IUserRepository } from "../../repository/user/IUserRepository.js";
+import type { IFindUserService } from "./types/IFindUserService.js";
 
 
 
