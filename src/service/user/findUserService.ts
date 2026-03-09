@@ -1,4 +1,5 @@
 import type { UserDto } from "../../dto/user/userDto.js";
+import { UserNotFoundError } from "../../errors/user/user.errors.js";
 import type { IUserRepository } from "../../repository/user/IUserRepository.js";
 import type { IFindUserService } from "./types/IFindUserService.js";
 
@@ -13,6 +14,6 @@ export class FindUserService implements IFindUserService {
         if(user){
             return user
         }
-        throw new Error('not found user.')
+        throw new UserNotFoundError()
     }
 }
