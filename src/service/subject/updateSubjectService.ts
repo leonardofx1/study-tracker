@@ -1,4 +1,5 @@
 import type { SubjectDto } from "../../dto/subject/subjectDto.js";
+import { ErrorUpdateSubject } from "../../errors/subject/subject.errors.js";
 import type { SubjectRepository } from "../../repository/subject/subjectRepository.js";
 import type { IUpdateSubject } from "./types/IUpdateSubjectService.js";
 
@@ -14,6 +15,6 @@ export class UpdateSubjectService implements IUpdateSubject {
         if(sub){
             return sub
         }
-        throw new Error('not updated')
+        throw new ErrorUpdateSubject()
     }
 }

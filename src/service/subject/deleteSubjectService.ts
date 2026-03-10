@@ -1,4 +1,5 @@
 
+import { ErrorDeleteSubject } from "../../errors/subject/subject.errors.js";
 import type { SubjectRepository } from "../../repository/subject/subjectRepository.js";
 import type { IDeleteService } from "./types/IDeleteSubjectService.js";
 
@@ -14,7 +15,7 @@ export class DeleteSubjectService implements IDeleteService {
         if(subDeleted){
             return subDeleted
         }
-        throw new Error('not deleted')
+        throw new ErrorDeleteSubject()
 
     }
 }

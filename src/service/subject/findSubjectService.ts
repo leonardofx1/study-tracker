@@ -1,3 +1,4 @@
+import { UserNotFoundError } from "../../errors/user/user.errors.js";
 import type { ISubjectRepository } from "../../repository/subject/ISubjectRepository.js";
 import type { IFindSubjectService, ISubject } from "./types/IFindSubjectService.js";
 
@@ -12,7 +13,7 @@ export class FindSubjectService implements IFindSubjectService {
         if(subject)
         return subject
 
-        return null
+        throw new UserNotFoundError()
 
     }
 }
