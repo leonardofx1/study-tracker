@@ -1,4 +1,5 @@
 import type { StudySessionDto } from "../../dto/study/studyDto.js";
+import { ErrorDeleteSession } from "../../errors/session/session.erros.js";
 import type { IStudySessionRepository } from "../../repository/studySession/IStudySessionRepository.js";
 import type { IDeleteSessionService } from "./types/IDeleteSessionService.js";
 
@@ -14,6 +15,6 @@ export class DeleteSessionService implements IDeleteSessionService {
         if(session){
               return session 
         }
-        throw new Error('not deleted session')
+        throw new ErrorDeleteSession()
     }
 }

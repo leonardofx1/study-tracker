@@ -1,4 +1,5 @@
 
+import { ErrorFindSession } from "../../errors/session/session.erros.js";
 import type { StudySessionRepository } from "../../repository/studySession/studySessionRepository.js";
 import type { IFindSessionService } from "./types/IFindSessionService.js";
 
@@ -17,6 +18,6 @@ export class FindSessionService implements IFindSessionService {
         if(session){
             return session
         }
-        throw new Error('not found session')
+        throw new ErrorFindSession()
     }
 }

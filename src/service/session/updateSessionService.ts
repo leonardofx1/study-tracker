@@ -1,4 +1,6 @@
 import type { StudySessionDto } from "../../dto/study/studyDto.js";
+import { ErrorUpdateSession } from "../../errors/session/session.erros.js";
+import { ErrorFindSubject } from "../../errors/subject/subject.errors.js";
 import type { StudySessionRepository } from "../../repository/studySession/studySessionRepository.js";
 import type { SubjectRepository } from "../../repository/subject/subjectRepository.js";
 import type { IUpdateSessionService } from "./types/IUpdateSessionService.js";
@@ -16,12 +18,12 @@ export class UpdateSessionService implements IUpdateSessionService {
         if(up){
             return up
         }
-        throw new Error('not update')
+        throw new ErrorUpdateSession()
     }
     existingSubject=async (subjectId: string) => {
         const sub = await this.subjectRepository.find(subjectId)
         if(!sub){
-            throw new Error('not found sub')
+            throw new ErrorFindSubject()
         }
     }
 }

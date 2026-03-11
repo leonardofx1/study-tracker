@@ -1,4 +1,4 @@
-import type { UUID } from "node:crypto";
+
 import type { StudySessionDto } from "../../dto/study/studyDto.js";
 
 

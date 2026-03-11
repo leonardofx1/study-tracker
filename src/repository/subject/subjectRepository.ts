@@ -28,5 +28,9 @@ update=async (subject:SubjectDto) => {
 
     return  subjectUp[0] as SubjectDto
 }
+existingSubject =async(subject:string,idUser:string)=> {
+    const _subject=await db.select().from(subjectSchema).where(eq(eq(subjectSchema.name, subject ),eq(subjectSchema.idUser,idUser)))
+    return _subject[0] as SubjectDto
+}
 
 }
