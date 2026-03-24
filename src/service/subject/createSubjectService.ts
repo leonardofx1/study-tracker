@@ -11,7 +11,7 @@ export class CreateSubjectService implements ICreateSubjectService {
     private userRepository: IUserRepository,
   ) {}
   create = async (subject: SubjectDto) => {
-    const alreadyExisting = await this.existingUser(subject.id);
+    const alreadyExisting = await this.existingUser(subject.idUser);
     const exisitngSubjectForUser = await this.existingSubject(subject)
 
       const sub =await  this.subjectRepository.create(subject);
