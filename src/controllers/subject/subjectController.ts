@@ -7,8 +7,10 @@ import { UserNotFoundError } from "../../errors/user/user.errors.js";
 import { ErrorCreatingSubject, ErrorDeleteSubject, ErrorFindSubject, ErrorSubjectAlreadyExists, ErrorUpdateSubject } from "../../errors/subject/subject.errors.js";
 import type { IUpdateSubject } from "../../service/subject/types/IUpdateSubjectService.js";
 import type { FindAllSubject } from "../../service/subject/findAllSubjectService.js";
-import type { ISubject } from "../../service/subject/types/IFindSubjectService.js";
+
 import type { FindSubjectService } from "../../service/subject/findSubjectService.js";
+import { randomUUID } from "node:crypto";
+import { subjectIdSchema, subjectIdUserSchema, subjectSchema } from "../../schemasZod/subject.js";
 
 
 
@@ -20,6 +22,8 @@ export class SubjectController implements ISubjectController {
     create= async(req: FastifyRequest, reply: FastifyReply) => {
         try{
             const subject = req.body as SubjectDto
+                subject.id = randomUUID()
+                subjectSchema.parse(subject)
             const resCreate = await this.createSubjectService.create(subject)
             reply.status(200).send({message:'subject successfully created.'})
 
@@ -37,7 +41,7 @@ export class SubjectController implements ISubjectController {
     }
     delete= async(req: FastifyRequest, reply: FastifyReply) => {
         try{
-            const {id}= req.params as {id:string}
+            const {id}= subjectIdSchema.parse(req.params) as {id:string}
             const res = await this.deleteSubjectService.delete(id)
 
         }catch(error){
@@ -49,7 +53,7 @@ export class SubjectController implements ISubjectController {
     }
     update=async  (req: FastifyRequest, reply: FastifyReply) => {
         try{
-            const subject = await req.body as SubjectDto
+            const subject =  subjectSchema.parse(req.body) as SubjectDto
             const up = await this.updateSubjectService.update(subject)
             reply.status(200).send({message:'Subject updated successfully.'})
         }
@@ -66,7 +70,8 @@ export class SubjectController implements ISubjectController {
     findAllSubject=async (req: FastifyRequest, reply: FastifyReply) => {
 
         try{
-            const allSubject = this.findAllSubjectService.findAllSubject
+            const {id} =subjectIdUserSchema.parse(req.params) as {id:string}
+            const allSubject =await  this.findAllSubjectService.findAllSubject(id)
             reply.status(200).send(allSubject)
 
         }catch(error){
@@ -81,7 +86,7 @@ export class SubjectController implements ISubjectController {
     }
     findSubject= async(req: FastifyRequest, reply: FastifyReply) => {
         try{
-            const {id} = req.params as {id:string}
+            const {id} = subjectIdSchema.parse(req.params) as {id:string}
             const sub = await this.findSubjectService.findSubject(id)
             reply.status(200).send(sub)
 
