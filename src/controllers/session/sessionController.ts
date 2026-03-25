@@ -1,6 +1,6 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
 import type { ISessionController } from "./ISessionController.js";
-import { createSessionSchema } from "../../schemasZod/session.js";
+import { deleteSession, findSession, sessionSchema } from "../../schemasZod/session.js";
 import type { CreateSessionService } from "../../service/session/createSessionService.js";
 import { randomUUID } from "node:crypto";
 import type { StudySessionDto } from "../../dto/study/studyDto.js";
@@ -17,8 +17,9 @@ export class SessionController implements ISessionController {
     constructor(private createSessionService:CreateSessionService,private deleteService:DeleteSessionService,private findAllSessionService:FindAllSessionService,private findSessionService:FindSessionService,private updateSessionService:UpdateSessionService){}
     create=async (req: FastifyRequest, reply: FastifyReply) => {
         try{
-            const session = createSessionSchema.parse(req.body) 
+            const session = req.body as StudySessionDto
             session.id = randomUUID()
+            sessionSchema.parse(session)
             const res = await this.createSessionService.create(session)
 
             reply.status(201).send({message:'session created successfully'})
@@ -35,7 +36,7 @@ export class SessionController implements ISessionController {
     }
     delete=async (req: FastifyRequest, reply: FastifyReply) => {
         try{
-            const {id} = await req.params as {id:string}
+            const {id} =  deleteSession.parse(req.params)  as {id:string}
             const session =await this.deleteService.delete(id)
             reply.status(204).send({message:'deleted session successfully.'})
         }catch(error){
@@ -48,7 +49,7 @@ export class SessionController implements ISessionController {
     findAllSession=async (req: FastifyRequest, reply: FastifyReply) => {
 
         try{
-            const {id} = req.params as {id:string}
+            const {id} = findSession.parse(req.params) as {id:string}
             const allSessions = await this.findAllSessionService.findAll(id)
 
             reply.status(200).send(allSessions)
@@ -69,7 +70,7 @@ export class SessionController implements ISessionController {
     findSession=async (req: FastifyRequest, reply: FastifyReply) => {
 
         try {
-            const {id} = req.params as {id:string}
+            const {id} = findSession.parse(req.params) as {id:string}
             const session = await this.findSessionService.findSession(id)
 
             reply.status(200).send(session)
@@ -82,7 +83,7 @@ export class SessionController implements ISessionController {
     }
     update=async (req: FastifyRequest, reply: FastifyReply) => {
         try{
-            const session = await req.body
+            const session = sessionSchema.parse(req.body)
             const updateRes = await this.updateSessionService.update(session as StudySessionDto)
             reply.status(200).send({message:'Study section successfully updated.'})
         }catch(error){
