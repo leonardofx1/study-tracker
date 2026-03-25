@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/leonardofx1/study-tracker#readme",
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/node": "^25.3.0",
     "@types/pg": "^8.16.0",
     "drizzle-kit": "^0.18.1",
@@ -27,6 +28,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "drizzle-orm": "^0.45.1",
     "fastify": "^5.7.4",
     "pg": "^8.18.0"
