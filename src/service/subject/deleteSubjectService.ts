@@ -1,11 +1,11 @@
 
 import { ErrorDeleteSubject } from "../../errors/subject/subject.errors.js";
 import type { SubjectRepository } from "../../repository/subject/subjectRepository.js";
-import type { IDeleteService } from "./types/IDeleteSubjectService.js";
+import type { IDeleteSubjectService } from "./types/IDeleteSubjectService.js";
 
 
 
-export class DeleteSubjectService implements IDeleteService {
+export class DeleteSubjectService implements IDeleteSubjectService {
     constructor(private subjectRepository:SubjectRepository){
 
     }

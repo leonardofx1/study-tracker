@@ -11,12 +11,12 @@ export const userSchema = pgTable('userSchema', {
 export const subjectSchema= pgTable('subjectSchema',{
     id:uuid('id').primaryKey().notNull(),
     name:text('name').notNull(),
-    idUser:uuid('idUser').references(()=> userSchema.id)
+    idUser:uuid('idUser').references(()=> userSchema.id,{onDelete:'cascade'}).notNull()
 })
 
 export const studySession = pgTable('studySession', {
     id:uuid('id').primaryKey(),
     sessionDuration:doublePrecision('sessionDuration'),
     date:date('date'),
-    subjectId:uuid('subjectId').references(()=>subjectSchema.id)
+    subjectId:uuid('subjectId').references(()=>subjectSchema.id,{onDelete:'cascade'}).notNull()
 })
