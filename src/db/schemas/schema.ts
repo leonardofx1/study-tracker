@@ -2,9 +2,10 @@ import { date, doublePrecision, integer, pgTable, text, uuid } from "drizzle-orm
 
 export const userSchema = pgTable('userSchema', {
     id:uuid('id').primaryKey().notNull(),
+    email:text('email').unique().notNull(),
     name:text('name').notNull(),
     age:integer('age').notNull(),
-    
+    password:text('password').notNull()
 })
 
 export const subjectSchema= pgTable('subjectSchema',{

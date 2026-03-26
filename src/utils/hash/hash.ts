@@ -1,11 +1,12 @@
 
 import bcrypt  from 'bcrypt'
 import type { IHash } from './iHash.js'
+import { InvalidParameters } from '../../errors/user/user.errors.js'
 
 export class Hash implements IHash {
 
 
-    hash = async(password:string,salt:number)=> {
+    hash = async(password:string,salt:string)=> {
         try {
          
             const passwordHash = bcrypt.hash(password,salt)
@@ -22,11 +23,13 @@ export class Hash implements IHash {
         }
     }
     compare = async(password:string,passwordHash:string)=> {
-        try {
             const res  = await bcrypt.compare(password,passwordHash)
+            if(!res){
+                throw new InvalidParameters()
+            }
             return res
-        } catch (error) {
-            throw error
-        }
+        
+          
+        
     }
 }
