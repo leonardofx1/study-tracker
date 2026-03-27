@@ -1,9 +1,12 @@
+import jwt from "@fastify/jwt";
 import Fastify from "fastify";
 
 
-const app =Fastify()
+export const app =Fastify()
 
-
+app.register(jwt,{
+    secret:'my secret'
+})
 
 
 const start = async ()=> {

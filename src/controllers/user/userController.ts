@@ -1,27 +1,28 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
 import type { IUserContoller } from "./IUserController.js";
-import type { IUserRepository } from "../../repository/user/IUserRepository.js";
-import type { ICreateSessionService } from "../../service/session/types/ICreateSessionService.js";
 import type { IDeleteService } from "../../service/user/types/IDeleteUserService.js";
 import type { IUpdateUser } from "../../service/user/types/IUpdateUserService.js";
 import type { ILoginUserService } from "../../service/user/types/ILoginUserService.js";
 import type { UserDto } from "../../dto/user/userDto.js";
 import { randomUUID } from "node:crypto";
 import type { ICreateUserService } from "../../service/user/types/ICreateUserService.js";
-import { ErrorCreatingUser, ErrorDeleteUser, ErrorUpdateUser, UserAlreadyExists } from "../../errors/user/user.errors.js";
+import { ErrorCreatingUser, ErrorDeleteUser, ErrorUpdateUser, InvalidParameters, UserAlreadyExists, UserNotFoundError } from "../../errors/user/user.errors.js";
+import type { IJwtService, Payload } from "../../utils/jwt/iJwtService.js";
+import { userDeleteSchema, userSchema } from "../../schemasZod/user.js";
 
 
 
 
 export class UserController implements IUserContoller {
-    constructor(private createUserService:ICreateUserService,private deleteUserService:IDeleteService,private loginService:ILoginUserService,private updateService:IUpdateUser){
+    constructor(private createUserService:ICreateUserService,private deleteUserService:IDeleteService,private loginService:ILoginUserService,private updateService:IUpdateUser,private jwt:IJwtService){
 
     }
     create=async (request: FastifyRequest, reply: FastifyReply) => {
        try {
          const user =await request.body as UserDto
         user.id = randomUUID()
-        const isCreated = await this.createUserService.save(user)
+        const isValidUser = userSchema.parse(user)
+        const isCreated = await this.createUserService.save(isValidUser)
         reply.status(200).send({message:'user successfully registered.'})
        } catch (error) {
         if(error instanceof UserAlreadyExists){
@@ -36,16 +37,25 @@ export class UserController implements IUserContoller {
     }
     login=async (req: FastifyRequest, reply: FastifyReply) => {
         try {
-            const user = req.body as UserDto
-            const res = await this.loginService.login(user)
+            const user = userSchema.parse(req.body )as UserDto
+            const resUSer = await this.loginService.login(user)
+            const payload:Payload = {email:resUSer.email,sub:resUSer.id}
+            const token = this.jwt.sign(payload)
+
+            reply.status(200).send({token})
         } catch (error) {
-            
+           if(error instanceof InvalidParameters) {
+            reply.status(400).send({message:'bad request.'})
+           }
+           if(error instanceof UserNotFoundError){
+            reply.status(404).send({message:'user not found.'})
+           }
         }
 
     }
     delete=async(req: FastifyRequest, reply: FastifyReply) =>{
         try{
-            const {id} = req.params as {id:string}
+            const {id} = userDeleteSchema.parse(req.params) as {id:string}
             const userId = await this.deleteUserService.delete(id)
 
             reply.status(200).send({message:'user deleted successfully.'})
@@ -58,7 +68,7 @@ export class UserController implements IUserContoller {
     }
     update=async (req: FastifyRequest, reply: FastifyReply) => {
         try{
-            const userUpdate = req.body as UserDto
+            const userUpdate = userSchema.parse(req.params) as UserDto
             const res = await this.updateService.update(userUpdate)
 
 
