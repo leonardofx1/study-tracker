@@ -50,6 +50,7 @@ export class UserController implements IUserContoller {
            if(error instanceof UserNotFoundError){
             reply.status(404).send({message:'user not found.'})
            }
+           throw error 
         }
 
     }
