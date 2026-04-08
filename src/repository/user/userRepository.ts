@@ -15,8 +15,8 @@ export class UserRepository implements IUserRepository {
         const res  = await db.delete(userSchema).where(eq(userSchema.id,id)).returning()
         return res[0] as UserDto 
         }
-    find=async (id:string)=> {
-        const user = await db.select().from(userSchema).where(eq(userSchema.id,id))
+    find=async (email:string)=> {
+        const user = await db.select().from(userSchema).where(eq(userSchema.email,email))
         return user[0] as UserDto
     }
     update=async (user:UserDto) => {

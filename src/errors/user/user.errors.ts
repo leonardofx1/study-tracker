@@ -35,3 +35,10 @@ export class UserNotFoundError extends Error {
         this.name ='user not found'
     }
 }
+
+export class InvalidParameters extends Error {
+    constructor(){
+        super('invalid parameters ')
+        this.name ='invalid parameters'
+    }
+}
